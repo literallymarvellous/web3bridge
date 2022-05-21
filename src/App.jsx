@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 
 const tiers = {
@@ -28,6 +28,7 @@ function App() {
   const [savings, setSavings] = useState([]);
   const tierInfo = tiers[form.tier];
   const [error, setError] = useState("");
+  const [totalSavings, setTotalSavings] = useState(0);
 
   const handleChange = (e) => {
     // if (e.target.name === "amount" && e.target.value !== tierInfo.amount) {
@@ -53,6 +54,18 @@ function App() {
       amount: "",
     });
   };
+
+  const handleClick = () => {};
+
+  const calcTotalSavings = () => {
+    let total = 0;
+    savings.forEach((saving) => (total += Number(saving.amount)));
+    setTotalSavings(total);
+  };
+
+  useEffect(() => {
+    calcTotalSavings();
+  }, [savings, totalSavings]);
 
   return (
     <div className="App">
@@ -110,11 +123,16 @@ function App() {
           <ul>
             {savings.map((saving) => (
               <li key={saving.name}>
-                <span>Name: {saving.name}</span>
-                <span>Tier: {saving.tier}</span>
-                <span>Amount: {saving.amount}</span>
+                <div>
+                  <span>Name: {saving.name}</span>
+                  <span>Tier: {saving.tier}</span>
+                  <span>Amount: {saving.amount}</span>
+                </div>
+                <button onClick={handleClick}>Withdraw</button>
               </li>
             ))}
+
+            <div>Total Savings: {totalSavings}</div>
           </ul>
         </div>
       </main>
