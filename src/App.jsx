@@ -68,7 +68,6 @@ function App() {
   };
 
   const handleClick = (id) => {
-    console.log("hey");
     const newSavings = savings.filter((saving) => saving.name !== id);
     setSavings(newSavings);
   };
