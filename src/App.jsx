@@ -116,12 +116,15 @@ function App() {
               <option value="2">tier 2</option>
               <option value="3">tier 3</option>
             </select>
-            <div>
-              tier: {tierInfo.tier}, interest: {tierInfo.interest}%, expected
-              savings amount: {tierInfo.amount}
-              total amount to recieve:{" "}
-              {(Number(tierInfo.amount) * Number(tierInfo.interest)) / 100 +
-                Number(tierInfo.amount)}
+            <div className="tier-info">
+              <span>Tier: {tierInfo.tier}</span>
+              <span>Interest: {tierInfo.interest}%</span>
+              <span>Expected savings amount: {tierInfo.amount}</span>
+              <span>
+                Total amount to recieve:{" "}
+                {(Number(tierInfo.amount) * Number(tierInfo.interest)) / 100 +
+                  Number(tierInfo.amount)}
+              </span>
             </div>
           </div>
 
@@ -143,10 +146,17 @@ function App() {
           <ul>
             {savings.map((saving) => (
               <li key={saving.name}>
-                <div>
+                <div className="display-info">
                   <span>Name: {saving.name}</span>
                   <span>Tier: {saving.tier}</span>
-                  <span>Amount: {saving.amount}</span>
+                  <span>Saved: {saving.amount}</span>
+                  <span>
+                    Recieving:{" "}
+                    {(Number(tiers[saving.tier].amount) *
+                      Number(tiers[saving.tier].interest)) /
+                      100 +
+                      Number(tiers[saving.tier].amount)}
+                  </span>
                   {/* <span>Date Saved: {saving.date}</span>
                   <span>Withdrawal date: {saving.withdrawDate}</span> */}
                 </div>
@@ -156,7 +166,7 @@ function App() {
               </li>
             ))}
 
-            <div>Total Savings: {totalSavings}</div>
+            <div className="total">Total Savings: {totalSavings}</div>
           </ul>
         </div>
       </main>
