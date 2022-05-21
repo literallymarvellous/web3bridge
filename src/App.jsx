@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./App.css";
+import dayjs from "dayjs";
 
 const tiers = {
   1: {
@@ -40,6 +41,8 @@ function App() {
     });
   };
 
+  console.log(dayjs().format("DD/MM/YYYY"));
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (form.amount !== tierInfo.amount) {
@@ -55,7 +58,11 @@ function App() {
     });
   };
 
-  const handleClick = () => {};
+  const handleClick = (id) => {
+    console.log("hey");
+    const newSavings = savings.filter((saving) => saving.name !== id);
+    setSavings(newSavings);
+  };
 
   const calcTotalSavings = () => {
     let total = 0;
@@ -128,7 +135,9 @@ function App() {
                   <span>Tier: {saving.tier}</span>
                   <span>Amount: {saving.amount}</span>
                 </div>
-                <button onClick={handleClick}>Withdraw</button>
+                <button onClick={() => handleClick(saving.name)}>
+                  Withdraw
+                </button>
               </li>
             ))}
 
