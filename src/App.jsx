@@ -93,7 +93,7 @@ function App() {
           </div>
 
           <div>
-            <label>Enter amount required for tier</label>
+            <label>Enter expected savings amount required for tier</label>
             <input
               type="text"
               name="amount"
@@ -105,6 +105,18 @@ function App() {
 
           <button>submit</button>
         </form>
+
+        <div>
+          <ul>
+            {savings.map((saving) => (
+              <li key={saving.name}>
+                <span>Name: {saving.name}</span>
+                <span>Tier: {saving.tier}</span>
+                <span>Amount: {saving.amount}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
       </main>
     </div>
   );
