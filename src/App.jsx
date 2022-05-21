@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
+import dayjs from "dayjs";
 
 const tiers = {
   1: {
@@ -24,10 +25,13 @@ function App() {
     name: "",
     tier: "1",
     amount: "",
+    date: "",
+    withdrawDate: "",
   });
   const [savings, setSavings] = useState([]);
   const tierInfo = tiers[form.tier];
   const [error, setError] = useState("");
+  const [totalSavings, setTotalSavings] = useState(0);
 
   const handleChange = (e) => {
     // if (e.target.name === "amount" && e.target.value !== tierInfo.amount) {
@@ -39,20 +43,49 @@ function App() {
     });
   };
 
+  // console.log(dayjs().format("DD/MM/YYYY"));
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (form.amount !== tierInfo.amount) {
       setError("enter right amount");
       return;
     }
+    const date = dayjs().format("DD/MM/YYYY");
+    const withdrawDate = dayjs().add(1, "week").format("DD/MM/YYYY");
+
+    setForm({
+      ...a,
+      date: "4",
+      withdrawDate: "5",
+    });
+
     setSavings((prev) => [...prev, form]);
     setForm({
       ...form,
       name: "",
       tier: "1",
       amount: "",
+      date: "",
+      withdrawDate: "",
     });
   };
+
+  const handleClick = (id) => {
+    console.log("hey");
+    const newSavings = savings.filter((saving) => saving.name !== id);
+    setSavings(newSavings);
+  };
+
+  const calcTotalSavings = () => {
+    let total = 0;
+    savings.forEach((saving) => (total += Number(saving.amount)));
+    setTotalSavings(total);
+  };
+
+  useEffect(() => {
+    calcTotalSavings();
+  }, [savings, totalSavings]);
 
   return (
     <div className="App">
@@ -83,12 +116,15 @@ function App() {
               <option value="2">tier 2</option>
               <option value="3">tier 3</option>
             </select>
-            <div>
-              tier: {tierInfo.tier}, interest: {tierInfo.interest}%, expected
-              savings amount: {tierInfo.amount}
-              total amount to recieve:{" "}
-              {(Number(tierInfo.amount) * Number(tierInfo.interest)) / 100 +
-                Number(tierInfo.amount)}
+            <div className="tier-info">
+              <span>Tier: {tierInfo.tier}</span>
+              <span>Interest: {tierInfo.interest}%</span>
+              <span>Expected savings amount: {tierInfo.amount}</span>
+              <span>
+                Total amount to recieve:{" "}
+                {(Number(tierInfo.amount) * Number(tierInfo.interest)) / 100 +
+                  Number(tierInfo.amount)}
+              </span>
             </div>
           </div>
 
@@ -110,11 +146,27 @@ function App() {
           <ul>
             {savings.map((saving) => (
               <li key={saving.name}>
-                <span>Name: {saving.name}</span>
-                <span>Tier: {saving.tier}</span>
-                <span>Amount: {saving.amount}</span>
+                <div className="display-info">
+                  <span>Name: {saving.name}</span>
+                  <span>Tier: {saving.tier}</span>
+                  <span>Saved: {saving.amount}</span>
+                  <span>
+                    Recieving:{" "}
+                    {(Number(tiers[saving.tier].amount) *
+                      Number(tiers[saving.tier].interest)) /
+                      100 +
+                      Number(tiers[saving.tier].amount)}
+                  </span>
+                  {/* <span>Date Saved: {saving.date}</span>
+                  <span>Withdrawal date: {saving.withdrawDate}</span> */}
+                </div>
+                <button onClick={() => handleClick(saving.name)}>
+                  Withdraw
+                </button>
               </li>
             ))}
+
+            <div className="total">Total Savings: {totalSavings}</div>
           </ul>
         </div>
       </main>
