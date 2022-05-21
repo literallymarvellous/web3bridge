@@ -25,8 +25,8 @@ function App() {
     name: "",
     tier: "1",
     amount: "",
-    date: "",
-    withdrawDate: "",
+    date: Date(),
+    withdrawDate: Date(),
   });
   const [savings, setSavings] = useState([]);
   const tierInfo = tiers[form.tier];
@@ -34,16 +34,11 @@ function App() {
   const [totalSavings, setTotalSavings] = useState(0);
 
   const handleChange = (e) => {
-    // if (e.target.name === "amount" && e.target.value !== tierInfo.amount) {
-    //   setError("enter right amount");
-    // }
     setForm({
       ...form,
       [e.target.name]: e.target.value,
     });
   };
-
-  // console.log(dayjs().format("DD/MM/YYYY"));
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -53,11 +48,12 @@ function App() {
     }
     const date = dayjs().format("DD/MM/YYYY");
     const withdrawDate = dayjs().add(1, "week").format("DD/MM/YYYY");
+    console.log(date, withdrawDate);
 
     setForm({
-      ...a,
-      date: "4",
-      withdrawDate: "5",
+      ...form,
+      date: Date().toDateString(),
+      withdrawDate: Date().toDateString(),
     });
 
     setSavings((prev) => [...prev, form]);
@@ -66,8 +62,8 @@ function App() {
       name: "",
       tier: "1",
       amount: "",
-      date: "",
-      withdrawDate: "",
+      date: Date(),
+      withdrawDate: Date(),
     });
   };
 
@@ -157,8 +153,8 @@ function App() {
                       100 +
                       Number(tiers[saving.tier].amount)}
                   </span>
-                  {/* <span>Date Saved: {saving.date}</span>
-                  <span>Withdrawal date: {saving.withdrawDate}</span> */}
+                  <span>Date Saved: {saving.date}</span>
+                  <span>Withdrawal date: {saving.withdrawDate}</span>
                 </div>
                 <button onClick={() => handleClick(saving.name)}>
                   Withdraw
